@@ -1,10 +1,11 @@
 <?php
+
 namespace NFePHP\BPe;
 
 /**
- * Classe a construção do xml do BPe modelo 63
- * Esta classe basica está estruturada para montar XML do BPe para o
- * layout versão 1.00, os demais modelos serão derivados deste
+ * Classe a construï¿½ï¿½o do xml do BPe modelo 63
+ * Esta classe basica estï¿½ estruturada para montar XML do BPe para o
+ * layout versï¿½o 1.00, os demais modelos serï¿½o derivados deste
  *
  * @category  API
  * @package   NFePHP\Bpe\
@@ -15,6 +16,7 @@ namespace NFePHP\BPe;
  * @author    Anderson Minuto Consoni Vaz <anderson at wdhouse dot com dot br>
  * @link      http://github.com/nfephp-org/sped-bpe for the canonical source repository
  */
+
 use stdClass;
 use RuntimeException;
 use InvalidArgumentException;
@@ -33,7 +35,7 @@ class Make
 
     /**
      * versao
-     * numero da versão do xml da CTe
+     * numero da versï¿½o do xml da CTe
      * @var string
      */
     public $versao = '1.00';
@@ -45,7 +47,7 @@ class Make
     public $xml = '';
     /**
      * dom
-     * Variável onde será montado o xml do documento fiscal
+     * Variï¿½vel onde serï¿½ montado o xml do documento fiscal
      * @var \NFePHP\Common\Dom\Dom
      */
     public $dom;
@@ -65,115 +67,115 @@ class Make
     public $mod = 63;
 
     /**
-     * Informações do BPe
+     * Informaï¿½ï¿½es do BPe
      * @var \DOMNode
      */
     private $BPe = '';
 
     /**
-     * Identificação do BPe
+     * Identificaï¿½ï¿½o do BPe
      * @var \DOMNode
      */
     private $infBPe = '';
 
     /**
-     * Identificação do BPe
+     * Identificaï¿½ï¿½o do BPe
      * @var \DOMNode
      */
     private $ide = '';
 
     /**
-     * Identificação do emitente do BPe
+     * Identificaï¿½ï¿½o do emitente do BPe
      * @var \DOMNode
      */
     private $emit = '';
 
     /**
-     * Identificação do endereço do emitente do BPe
+     * Identificaï¿½ï¿½o do endereï¿½o do emitente do BPe
      * @var \DOMNode
      */
     private $enderEmit = '';
 
     /**
-     * Identificação do comprador
+     * Identificaï¿½ï¿½o do comprador
      * @var \DOMNode
      */
     private $comp = '';
 
     /**
-     * Identificação do endereço do comprador
+     * Identificaï¿½ï¿½o do endereï¿½o do comprador
      * @var \DOMNode
      */
     private $enderComp = '';
 
     /**
-     * Identificação da agencia
+     * Identificaï¿½ï¿½o da agencia
      * @var \DOMNode
      */
     private $agencia = '';
 
     /**
-     * Identificação do endereço da agencia
+     * Identificaï¿½ï¿½o do endereï¿½o da agencia
      * @var \DOMNode
      */
     private $enderAgencia = '';
 
     /**
-     * Informações substituição BPe
+     * Informaï¿½ï¿½es substituiï¿½ï¿½o BPe
      * @var \DOMNode
      */
     private $infBPeSub = '';
 
     /**
-     * Informações do detalhamento da passagem
+     * Informaï¿½ï¿½es do detalhamento da passagem
      * @var \DOMNode
      */
     private $infPassagem = '';
 
     /**
-     * Informações do passageiro
+     * Informaï¿½ï¿½es do passageiro
      * @var \DOMNode
      */
     private $infPassageiro = '';
 
     /**
-     * Informações da viagem
+     * Informaï¿½ï¿½es da viagem
      * @var \DOMNode
      */
     private $infViagem = '';
 
     /**
-     * Informações da travessia
+     * Informaï¿½ï¿½es da travessia
      * @var \DOMNode
      */
     private $infTravessia = '';
 
     /**
-     * Informações dos valores do BPe
+     * Informaï¿½ï¿½es dos valores do BPe
      * @var \DOMNode
      */
     private $infValorBPe = '';
 
     /**
-     * Informações componentes dos valores do BPe
+     * Informaï¿½ï¿½es componentes dos valores do BPe
      * @var \DOMNode
      */
     private $infValorBPeComp = array();
 
     /**
-     * Informações relativas a impostos
+     * Informaï¿½ï¿½es relativas a impostos
      * @var \DOMNode
      */
     private $imp = '';
 
     /**
-     * Informações relativas ao ICMS
+     * Informaï¿½ï¿½es relativas ao ICMS
      * @var \DOMNode
      */
     private $impICMS = '';
 
     /**
-     * Informações relativas a prestação sujeito a tributacao normal do ICMS
+     * Informaï¿½ï¿½es relativas a prestaï¿½ï¿½o sujeito a tributacao normal do ICMS
      * @var \DOMNode
      */
     private $impICMSICMS00 = '';
@@ -185,7 +187,7 @@ class Make
     private $pag = '';
 
     /**
-     * Informações suplementares do BPe
+     * Informaï¿½ï¿½es suplementares do BPe
      * @var \DOMNode
      */
     private $infBPeSupl = '';
@@ -229,7 +231,7 @@ class Make
             'cUF',
             $std->cUF,
             true,
-            $identificador . 'Código da UF do emitente do CT-e'
+            $identificador . 'Cï¿½digo da UF do emitente do CT-e'
         );
         $this->dom->addChild(
             $this->ide,
@@ -348,14 +350,14 @@ class Make
             'dhCont',
             $std->dhCont,
             false,
-            $identificador . 'Data e Hora da entrada em contingência'
+            $identificador . 'Data e Hora da entrada em contingï¿½ncia'
         );
         $this->dom->addChild(
             $this->ide,
             'xJust',
             Strings::replaceSpecialsChars(substr(trim($std->xJust), 0, 256)),
             false,
-            $identificador . 'Justificativa da entrada em contingência'
+            $identificador . 'Justificativa da entrada em contingï¿½ncia'
         );
         return $this->ide;
     }
@@ -425,15 +427,15 @@ class Make
             $identificador . ''
         );
         $this->TAR = $std->TAR;
-//        if (isset($std->TAR)) {
-//            $this->dom->addChild(
-//                $this->emit,
-//                'TAR',
-//                $std->TAR,
-//                true,
-//                $identificador . ''
-//            );
-//        }
+        //        if (isset($std->TAR)) {
+        //            $this->dom->addChild(
+        //                $this->emit,
+        //                'TAR',
+        //                $std->TAR,
+        //                true,
+        //                $identificador . ''
+        //            );
+        //        }
         return $this->emit;
     }
 
@@ -457,7 +459,7 @@ class Make
             'nro',
             $std->nro,
             true,
-            $identificador . 'Número'
+            $identificador . 'Nï¿½mero'
         );
         $this->dom->addChild(
             $this->enderEmit,
@@ -478,14 +480,14 @@ class Make
             'cMun',
             $std->cMun,
             true,
-            $identificador . 'Código do município'
+            $identificador . 'Cï¿½digo do municï¿½pio'
         );
         $this->dom->addChild(
             $this->enderEmit,
             'xMun',
             $std->xMun,
             true,
-            $identificador . 'Nome do município'
+            $identificador . 'Nome do municï¿½pio'
         );
         $this->dom->addChild(
             $this->enderEmit,
@@ -508,6 +510,13 @@ class Make
             false,
             $identificador . 'Telefone'
         );
+        $this->dom->addChild(
+            $this->enderEmit,
+            'email',
+            $std->email,
+            false,
+            $identificador . 'EndereÃ§o de E-mail'
+        );
         return $this->enderEmit;
     }
 
@@ -526,19 +535,19 @@ class Make
             true,
             $identificador . ''
         );
-        if ($std->CNPJ != '') {
-            $this->dom->addChild(
-                $this->comp,
-                'CNPJ',
-                $std->CNPJ,
-                true,
-                $identificador . ''
-            );
-        } elseif ($std->CPF != '') {
+        if (isset($std->CPF)) {
             $this->dom->addChild(
                 $this->comp,
                 'CPF',
                 $std->CPF,
+                true,
+                $identificador . ''
+            );
+        } else if (isset($std->idEstrangeiro)) {
+            $this->dom->addChild(
+                $this->comp,
+                'idEstrangeiro',
+                $std->idEstrangeiro,
                 true,
                 $identificador . ''
             );
@@ -550,28 +559,12 @@ class Make
                 true,
                 $identificador . ''
             );
-            $this->dom->addChild(
-                $this->comp,
-                'CPF',
-                $std->CPF,
-                true,
-                $identificador . ''
-            );
-        }
-        if (isset($std->idEstrangeiro)) {
-            $this->dom->addChild(
-                $this->comp,
-                'idEstrangeiro',
-                $std->idEstrangeiro,
-                true,
-                $identificador . ''
-            );
         }
         $this->dom->addChild(
             $this->comp,
             'IE',
             $std->IE,
-            true,
+            false,
             $identificador . ''
         );
         return $this->comp;
@@ -597,7 +590,7 @@ class Make
             'nro',
             $std->nro,
             true,
-            $identificador . 'Número'
+            $identificador . 'Nï¿½mero'
         );
         $this->dom->addChild(
             $this->enderComp,
@@ -618,14 +611,14 @@ class Make
             'cMun',
             $std->cMun,
             true,
-            $identificador . 'Código do município'
+            $identificador . 'Cï¿½digo do municï¿½pio'
         );
         $this->dom->addChild(
             $this->enderComp,
             'xMun',
             $std->xMun,
             true,
-            $identificador . 'Nome do município'
+            $identificador . 'Nome do municï¿½pio'
         );
         $this->dom->addChild(
             $this->enderComp,
@@ -717,7 +710,7 @@ class Make
             'nro',
             $std->nro,
             true,
-            $identificador . 'Número'
+            $identificador . 'Nï¿½mero'
         );
         $this->dom->addChild(
             $this->enderAgencia,
@@ -738,14 +731,14 @@ class Make
             'cMun',
             $std->cMun,
             true,
-            $identificador . 'Código do município'
+            $identificador . 'Cï¿½digo do municï¿½pio'
         );
         $this->dom->addChild(
             $this->enderAgencia,
             'xMun',
             $std->xMun,
             true,
-            $identificador . 'Nome do município'
+            $identificador . 'Nome do municï¿½pio'
         );
         $this->dom->addChild(
             $this->enderAgencia,
@@ -888,7 +881,7 @@ class Make
             $this->infPassageiro,
             'CPF',
             $std->CPF,
-            true,
+            false,
             $identificador . ''
         );
         if (isset($std->tpDoc)) {
@@ -911,7 +904,7 @@ class Make
                     $this->infPassageiro,
                     'xDoc',
                     $std->xDoc,
-                    true,
+                    false,
                     $identificador . ''
                 );
             }
@@ -921,7 +914,7 @@ class Make
                 $this->infPassageiro,
                 'dNasc',
                 $std->dNasc,
-                true,
+                false,
                 $identificador . ''
             );
         }
@@ -930,7 +923,7 @@ class Make
                 $this->infPassageiro,
                 'fone',
                 $std->fone,
-                true,
+                false,
                 $identificador . ''
             );
         }
@@ -939,7 +932,7 @@ class Make
                 $this->infPassageiro,
                 'email',
                 $std->email,
-                true,
+                false,
                 $identificador . ''
             );
         }
@@ -1268,7 +1261,7 @@ class Make
 
     /**
      * Tag raiz do documento xml
-     * Função chamada pelo método [ monta ]
+     * Funï¿½ï¿½o chamada pelo mï¿½todo [ monta ]
      * @return \DOMElement
      */
     private function buildBPe()
@@ -1303,9 +1296,10 @@ class Make
             }
             $this->dom->appChild($this->infBPe, $this->comp, 'Falta tag "infCte"');
         }
-
-        $this->dom->appChild($this->agencia, $this->enderAgencia, 'Falta tag "agencia"');
-        $this->dom->appChild($this->infBPe, $this->agencia, 'Falta tag "infCte"');
+        if ($this->agencia) {
+            $this->dom->appChild($this->agencia, $this->enderAgencia, 'Falta tag "agencia"');
+            $this->dom->appChild($this->infBPe, $this->agencia, 'Falta tag "infCte"');
+        }
         if ($this->infBPeSub != '') {
             $this->dom->appChild($this->infBPe, $this->infBPeSub, 'Falta tag "infCte"');
         }
@@ -1322,19 +1316,24 @@ class Make
                 $this->dom->appChild($this->infValorBPe, $value, 'Falta tag "infValorBPe"');
             }
         }
-        $this->dom->appChild($this->infBPe, $this->infValorBPe, 'Falta tag "infCte"');
+        if ($this->infValorBPe) {
+            $this->dom->appChild($this->infBPe, $this->infValorBPe, 'Falta tag "infCte"');
+        }
         if ($this->impICMSICMS00 != '') {
             $this->dom->appChild($this->impICMS, $this->impICMSICMS00, 'Falta tag "impICMS"');
         }
-        $this->dom->appChild($this->imp, $this->impICMS, 'Falta tag "imp"');
-        $this->dom->appChild($this->infBPe, $this->imp, 'Falta tag "infCte"');
-
-        $this->dom->appChild($this->infBPe, $this->pag, 'Falta tag "infCte"');
-
-
+        if ($this->imp) {
+            $this->dom->appChild($this->imp, $this->impICMS, 'Falta tag "imp"');
+            $this->dom->appChild($this->infBPe, $this->imp, 'Falta tag "infCte"');
+        }
+        if ($this->pag) {
+            $this->dom->appChild($this->infBPe, $this->pag, 'Falta tag "infCte"');
+        }
         //[1] tag infBPe
         $this->dom->appChild($this->BPe, $this->infBPe, 'Falta tag "BPe"');
-        $this->dom->appChild($this->BPe, $this->infBPeSupl, 'Falta tag "BPe"');
+        if ($this->infBPeSupl) {
+            $this->dom->appChild($this->BPe, $this->infBPeSupl, 'Falta tag "BPe"');
+        }
         //[0] tag BPe
         $this->dom->appendChild($this->BPe);
 
