@@ -292,7 +292,7 @@ class Make
         $this->dom->addChild(
             $this->ide,
             'cBP',
-            $std->cBP,
+            str_pad($std->cBP, 8, '0', STR_PAD_LEFT),
             true,
             $identificador . ''
         );
@@ -415,8 +415,8 @@ class Make
         $this->dom->addChild(
             $this->emit,
             'IEST',
-            Strings::onlyNumbers($std->IEST),
-            true,
+            $std->IEST ? Strings::onlyNumbers($std->IEST) : null,
+            false,
             $identificador . ''
         );
         $this->dom->addChild(
@@ -1438,7 +1438,7 @@ class Make
             $this->dom->addChild(
                 $card,
                 "nParcelas",
-                $stdCard->nParcelas ?? null,
+                $stdCard->nParcelas ? str_pad($stdCard->nParcelas, 3, '0', STR_PAD_LEFT) : null,
                 false,
                 $identificadorCard . "Número de parcelas"
             );
@@ -1494,7 +1494,7 @@ class Make
             $this->emit,
             'TAR',
             $this->TAR,
-            true,
+            false,
             'TAR'
         );
         $this->dom->appChild($this->infBPe, $this->emit, 'Falta tag "infCte"');

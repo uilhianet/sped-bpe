@@ -48,7 +48,7 @@ class Webservices
         $autorizadores = json_decode(file_get_contents($autfile), true);
         if (!key_exists($sigla, $autorizadores[$modelo])) {
             throw new \RuntimeException(
-                "Não existe o autorizador [$sigla] para os "
+                "Nï¿½o existe o autorizador [$sigla] para os "
                 . "webservices do modelo [$modelo]"
             );
         }
@@ -58,7 +58,7 @@ class Webservices
         }
         if (empty($this->std->$auto)) {
             throw new \RuntimeException(
-                "Não existem webservices cadastrados para  [$sigla] no modelo [$modelo]"
+                "Nï¿½o existem webservices cadastrados para  [$sigla] no modelo [$modelo]"
             );
         }
         $svw = $this->std->$auto->$ambiente;
