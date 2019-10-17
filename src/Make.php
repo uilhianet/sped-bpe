@@ -175,16 +175,34 @@ class Make
     private $impICMS = '';
 
     /**
+     * Informações Adicionais
+     * @var \DOMNode
+     */
+    private $infAdic = '';
+
+    /**
      * Informa��es relativas a presta��o sujeito a tributacao normal do ICMS
      * @var \DOMNode
      */
-    private $impICMSICMS00 = '';
+    private $icms = '';
+
+    /**
+     * Informa��es relativas a presta��o sujeito a tributacao normal do ICMS
+     * @var \DOMNode
+     */
+    private $chBPe = '';
 
     /**
      * Dados do pagamento
      * @var \DOMNode
      */
-    private $pag = '';
+    private $pag = array();
+
+    /**
+     * Dados Autorizados para download do XML
+     * @var \DOMNode
+     */
+    private $autXML = array();
 
     /**
      * Informa��es suplementares do BPe
@@ -219,6 +237,16 @@ class Make
         $this->infBPe->setAttribute('versao', $std->versao);
         return $this->infBPe;
     }
+
+    /**
+     * Retorns the key number of BPe (44 digits)
+     * @return string
+     */
+    public function getChave()
+    {
+        return $this->chBPe;
+    }
+
 
     public function tagide($std)
     {
@@ -1160,6 +1188,7 @@ class Make
         $identificador = '#125 <imp> - ';
         $this->imp = $this->dom->createElement('imp');
         $this->impICMS = $this->dom->createElement('ICMS');
+
         if (isset($std->vTotTrib)) {
             $this->dom->addChild(
                 $this->imp,
@@ -1182,42 +1211,139 @@ class Make
     }
 
     /**
-     * @param $std
+     * tagICMS
+     * Informações relativas ao ICMS
+     * #194
+     *
      * @return DOMElement
      */
-    public function tagimpICMSICMS00($std)
+    public function tagicms($std)
     {
-        $identificador = '#127 <ICMS00> - ';
-        $this->impICMSICMS00 = $this->dom->createElement('ICMS00');
+        $identificador = 'N01 <ICMSxx> - ';
+        switch ($std->CST) {
+            case '00':
+                $icms = $this->dom->createElement("ICMS00");
+                $this->dom->addChild($icms, 'CST', $std->CST, true, "$identificador  Tributação do ICMS = 00");
+                $this->dom->addChild($icms, 'vBC', $std->vBC, true, "$identificador  Valor da BC do ICMS");
+                $this->dom->addChild($icms, 'pICMS', $std->pICMS, true, "$identificador  Alíquota do imposto");
+                $this->dom->addChild($icms, 'vICMS', $std->vICMS, true, "$identificador  Valor do ICMS");
+                break;
+            case '20':
+                $icms = $this->dom->createElement("ICMS20");
+                $this->dom->addChild($icms, 'CST', $std->CST, true, "$identificador  Tributação do ICMS = 20");
+                $this->dom->addChild(
+                    $icms,
+                    'pRedBC',
+                    $std->pRedBC,
+                    true,
+                    "$identificador  Percentual da Redução de BC"
+                );
+                $this->dom->addChild($icms, 'vBC', $std->vBC, true, "$identificador  Valor da BC do ICMS");
+                $this->dom->addChild($icms, 'pICMS', $std->pICMS, true, "$identificador  Alíquota do imposto");
+                $this->dom->addChild($icms, 'vICMS', $std->vICMS, true, "$identificador  Valor do ICMS");
+                break;
+            case '40':
+                $icms = $this->dom->createElement("ICMS45");
+                $this->dom->addChild($icms, 'CST', $std->CST, true, "$identificador  Tributação do ICMS = 40");
+                break;
+            case '41':
+                $icms = $this->dom->createElement("ICMS45");
+                $this->dom->addChild($icms, 'CST', $std->CST, true, "$identificador  Tributação do ICMS = 41");
+                break;
+            case '51':
+                $icms = $this->dom->createElement("ICMS45");
+                $this->dom->addChild($icms, 'CST', $std->CST, true, "$identificador  Tributação do ICMS = 51");
+                break;
+            case '90':
+                $icms = $this->dom->createElement("ICMS90");
+                $this->dom->addChild($icms, 'CST', $std->CST, true, "$identificador  Tributação do ICMS = 90");
+                $this->dom->addChild(
+                    $icms,
+                    'pRedBC',
+                    $std->pRedBC,
+                    false,
+                    "$identificador  Percentual da Redução de BC"
+                );
+                $this->dom->addChild($icms, 'vBC', $std->vBC, true, "$identificador  Valor da BC do ICMS");
+                $this->dom->addChild($icms, 'pICMS', $std->pICMS, true, "$identificador  Alíquota do imposto");
+                $this->dom->addChild($icms, 'vICMS', $std->vICMS, true, "$identificador  Valor do ICMS");
+                $this->dom->addChild($icms, 'vCred', $std->vCred, false, "$identificador Valor do Crédito Outorgado/Presumido");
+                break;
+            case 'SN':
+                $icms = $this->dom->createElement("ICMSSN");
+                $this->dom->addChild($icms, 'CST', 90, true, "$identificador Tributação do ICMS = 90");
+                $this->dom->addChild($icms, 'indSN', '1', true, "$identificador  Indica se contribuinte é SN");
+                break;
+        }
+        $this->icms = $icms;
+        return $this->icms;
+    }
+
+
+
+    /**
+     * tagautXML
+     * tag Bpe/infMDFe/autXML
+     *
+     * Autorizados para download do XML do MDF-e
+     *
+     * @param string $cnpj
+     * @param string $cpf
+     *
+     * @return DOMElement
+     */
+    public function tagautXML(stdClass $std)
+    {
+        $identificador = '#175 <autXML> - ';
+        $autXML = $this->dom->createElement("autXML");
         $this->dom->addChild(
-            $this->impICMSICMS00,
-            'CST',
-            $std->CST,
-            true,
-            $identificador . ''
+            $autXML,
+            "CNPJ",
+            $std->CNPJ ?? null,
+            false,
+            $identificador . "CNPJ do autorizado"
         );
         $this->dom->addChild(
-            $this->impICMSICMS00,
-            'vBC',
-            $std->vBC,
-            true,
-            $identificador . ''
+            $autXML,
+            "CPF",
+            $std->CPF ?? null,
+            false,
+            $identificador . "CPF do autorizado"
+        );
+        $this->autXML[] = $autXML;
+        return $this->autXML;
+    }
+
+    /**
+     * taginfAdic
+     * Grupo de Informações Adicionais
+     * tag MDFe/infMDFe/infAdic (opcional)
+     *
+     * @param  string $infAdFisco
+     * @param  string $infCpl
+     *
+     * @return DOMElement
+     */
+    public function taginfAdic(stdClass $std)
+    {
+        $identificador = '#178 <infAdic> - ';
+        $infAdic = $this->dom->createElement("infAdic");
+        $this->dom->addChild(
+            $infAdic,
+            "infAdFisco",
+            $std->infAdFisco,
+            false,
+            $identificador . "Informações Adicionais de Interesse do Fisco"
         );
         $this->dom->addChild(
-            $this->impICMSICMS00,
-            'pICMS',
-            $std->pICMS,
-            true,
-            $identificador . ''
+            $infAdic,
+            "infCpl",
+            $std->infCpl,
+            false,
+            $identificador . "Informações Complementares de interesse do Contribuinte"
         );
-        $this->dom->addChild(
-            $this->impICMSICMS00,
-            'vICMS',
-            $std->vICMS,
-            true,
-            $identificador . ''
-        );
-        return $this->impICMSICMS00;
+        $this->infAdic = $infAdic;
+        return $infAdic;
     }
 
     /**
@@ -1227,22 +1353,105 @@ class Make
     public function tagpag($std)
     {
         $identificador = '#160 <pag> - ';
-        $this->pag = $this->dom->createElement('pag');
+        $pag = $this->dom->createElement('pag');
         $this->dom->addChild(
-            $this->pag,
+            $pag,
             'tPag',
             $std->tPag,
             true,
-            $identificador . ''
+            $identificador . 'Forma de Pagamento'
         );
         $this->dom->addChild(
-            $this->pag,
+            $pag,
+            'xPag',
+            $std->xPag,
+            false,
+            $identificador . 'Descrição da forma de pagamento 99 - Outros'
+        );
+        $this->dom->addChild(
+            $pag,
+            'nDocPag',
+            $std->nDocPag,
+            false,
+            $identificador . 'Número do documento ou carteira apresentada nas formas de pagamento diferentes de 03 e 04'
+        );
+        $this->dom->addChild(
+            $pag,
             'vPag',
             $std->vPag,
             true,
-            $identificador . ''
+            $identificador . 'Valor do Pagamento'
         );
-        return $this->pag;
+        if (isset($std->card)) {
+            $identificadorCard = '[2] <card> - ';
+            $card = $this->dom->createElement("card");
+            $stdCard = $std->card;
+            $this->dom->addChild(
+                $card,
+                "tpIntegra",
+                $stdCard->tpIntegra,
+                true,
+                $identificadorCard . "Tipo de Integração do processo de pagamento"
+            );
+            $this->dom->addChild(
+                $card,
+                "CNPJ",
+                $stdCard->CNPJ ?? null,
+                false,
+                $identificadorCard . "CNPJ da credenciadora de cartão de crédito/débito"
+            );
+            $this->dom->addChild(
+                $card,
+                "tBand",
+                $stdCard->tBand ?? null,
+                false,
+                $identificadorCard . "Bandeira da operadora de cartão de crédito/débito"
+            );
+            $this->dom->addChild(
+                $card,
+                "xBand",
+                $stdCard->xBand ?? null,
+                false,
+                $identificadorCard . "Descrição da operadora de cartão para 99 - Outros"
+            );
+            $this->dom->addChild(
+                $card,
+                "cAut",
+                $stdCard->cAut ?? null,
+                false,
+                $identificadorCard . "Número de autorização da operação"
+            );
+            $this->dom->addChild(
+                $card,
+                "nsuTrans",
+                $stdCard->nsuTrans ?? null,
+                false,
+                $identificadorCard . "Número sequencial único da transação"
+            );
+            $this->dom->addChild(
+                $card,
+                "nsuHost",
+                $stdCard->nsuHost ?? null,
+                false,
+                $identificadorCard . "Número sequencial único do Host"
+            );
+            $this->dom->addChild(
+                $card,
+                "nParcelas",
+                $stdCard->nParcelas ?? null,
+                false,
+                $identificadorCard . "Número de parcelas"
+            );
+            $this->dom->addChild(
+                $card,
+                "infAdCard",
+                $stdCard->infAdCard ?? null,
+                false,
+                $identificadorCard . "Informações adicionais operacionais para integração do cartão de crédito"
+            );
+            $this->dom->appChild($pag, $card, 'Falta tag "card"');
+        }
+        return $this->pag[] = $pag;
     }
 
     /**
@@ -1319,15 +1528,21 @@ class Make
         if ($this->infValorBPe) {
             $this->dom->appChild($this->infBPe, $this->infValorBPe, 'Falta tag "infCte"');
         }
-        if ($this->impICMSICMS00 != '') {
-            $this->dom->appChild($this->impICMS, $this->impICMSICMS00, 'Falta tag "impICMS"');
+        if ($this->icms) {
+            $this->dom->appChild($this->impICMS, $this->icms, 'Falta tag "impICMS"');
         }
         if ($this->imp) {
-            $this->dom->appChild($this->imp, $this->impICMS, 'Falta tag "imp"');
+            $this->imp->insertBefore($this->impICMS, $this->imp->firstChild);
             $this->dom->appChild($this->infBPe, $this->imp, 'Falta tag "infCte"');
         }
         if ($this->pag) {
-            $this->dom->appChild($this->infBPe, $this->pag, 'Falta tag "infCte"');
+            $this->dom->addArrayChild($this->infBPe, $this->pag, 'Falta tag "infCte"');
+        }
+        if ($this->autXML) {
+            $this->dom->addArrayChild($this->infBPe, $this->autXML, 'Falta tag "autXML"');
+        }
+        if ($this->infAdic) {
+            $this->dom->appChild($this->infBPe, $this->infAdic, 'Falta tag "infAdic"');
         }
         //[1] tag infBPe
         $this->dom->appChild($this->BPe, $this->infBPe, 'Falta tag "BPe"');
@@ -1336,8 +1551,44 @@ class Make
         }
         //[0] tag BPe
         $this->dom->appendChild($this->BPe);
-
+        $this->checkCTeKey($this->dom);
         $this->xml = $this->dom->saveXML();
         return true;
+    }
+
+    protected function checkCTeKey($dom)
+    {
+        $infCTe = $dom->getElementsByTagName("infBPe")->item(0);
+        $ide = $dom->getElementsByTagName("ide")->item(0);
+        $emit = $dom->getElementsByTagName("emit")->item(0);
+        $cUF = $ide->getElementsByTagName('cUF')->item(0)->nodeValue;
+        $dhEmi = $ide->getElementsByTagName('dhEmi')->item(0)->nodeValue;
+        $cnpj = $emit->getElementsByTagName('CNPJ')->item(0)->nodeValue;
+        $mod = $ide->getElementsByTagName('mod')->item(0)->nodeValue;
+        $serie = $ide->getElementsByTagName('serie')->item(0)->nodeValue;
+        $nNF = $ide->getElementsByTagName('nBP')->item(0)->nodeValue;
+        $tpEmis = $ide->getElementsByTagName('tpEmis')->item(0)->nodeValue;
+        $cCT = $ide->getElementsByTagName('cBP')->item(0)->nodeValue;
+        $chave = str_replace('BPe', '', $infCTe->getAttribute("Id"));
+        $dt = new DateTime($dhEmi);
+        $chaveMontada = Keys::build(
+            $cUF,
+            $dt->format('y'),
+            $dt->format('m'),
+            $cnpj,
+            $mod,
+            $serie,
+            $nNF,
+            $tpEmis,
+            $cCT
+        );
+        //caso a chave contida no BPe esteja errada
+        //substituir a chave
+        if ($chaveMontada != $chave) {
+            $ide->getElementsByTagName('cDV')->item(0)->nodeValue = substr($chaveMontada, -1);
+            $infBPe = $dom->getElementsByTagName("infBPe")->item(0);
+            $infBPe->setAttribute("Id", "BPe" . $chaveMontada);
+            $this->chBPe = $chaveMontada;
+        }
     }
 }
