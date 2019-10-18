@@ -260,7 +260,10 @@ class Tools
                 throw new \InvalidArgumentException('Essa vers�o de layout n�o est� dispon�vel');
             }
             $this->versao = $version;
-            $this->config->schemes = $this->availableVersions[$version];
+            if (!$this->config->schemes) {
+                $this->config->schemes = $this->availableVersions[$version];
+            }
+
             $this->pathschemes = realpath(
                 __DIR__ . '/../../schemes/' . $this->config->schemes
             ) . '/';
@@ -343,8 +346,13 @@ class Tools
      */
     protected function addQRCode(DOMDocument $dom)
     {
+        $cUF = $dom->getElementsByTagName('cUF')->item(0)->nodeValue;
+        $tpAmb = $dom->getElementsByTagName('tpAmb')->item(0)->nodeValue;
+        $uf = UFList::getUFByCode($cUF);
+        $this->servico('BPeConsultaQR', $uf, $tpAmb);
         $signed = QRCode::putQRTag(
-            $dom
+            $dom,
+            $this->urlService
         );
         return Strings::clearXmlString($signed);
     }
@@ -377,7 +385,7 @@ class Tools
     {
         $schema = $this->pathschemes . $method . "_v$version.xsd";
         if (!is_file($schema)) {
-            return true;
+            return $schema;
         }
         return Validator::isValid(
             $body,

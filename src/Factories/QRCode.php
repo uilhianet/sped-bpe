@@ -27,7 +27,8 @@ class QRCode
      * @throws DocumentsException
      */
     public static function putQRTag(
-        \DOMDocument $dom
+        \DOMDocument $dom,
+        $url
     ) {
 
         $bpe = $dom->getElementsByTagName('BPe')->item(0);
@@ -35,7 +36,7 @@ class QRCode
         $ide = $dom->getElementsByTagName('ide')->item(0);
         $chBPe = preg_replace('/[^0-9]/', '', $infBPe->getAttribute("Id"));
         $tpAmb = $ide->getElementsByTagName('tpAmb')->item(0)->nodeValue;
-        $urlQRCode = "https://dfe-portal.svrs.rs.gov.br/bpe/qrCode?chBPe=$chBPe&tpAmb=$tpAmb";
+        $urlQRCode = $url."?chBPe=$chBPe&tpAmb=$tpAmb";
         $infBPeSupl = $dom->createElement("infBPeSupl");
         $qrCode = $infBPeSupl->appendChild($dom->createElement('qrCodBPe'));
         $qrCode->appendChild($dom->createCDATASection($urlQRCode));

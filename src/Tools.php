@@ -40,29 +40,25 @@ class Tools extends ToolsCommon
      * @return string soap response xml
      */
     public function sefazEnviaLote(
-        $aXml,
-        $idLote = ''
+        $aXml
     ) {
-        if (!is_array($aXml)) {
-            throw new \InvalidArgumentException('Os XML das BPe devem ser passados em um array.');
-        }
         $servico = 'BPeRecepcao';
         $this->checkContingencyForWebServices($servico);
-        $sxml = implode("", $aXml);
-        $sxml = preg_replace("/<\?xml.*?\?>/", "", $sxml);
+        if ($this->contingency->type != '') {
+            throw new \Exception('Em contingencia');
+        }
+        $sxml = preg_replace("/<\?xml.*?\?>/", "", $aXml);
         $this->servico(
             $servico,
             $this->config->siglaUF,
             $this->tpAmb
         );
-        $request = "<enviBPe xmlns=\"$this->urlPortal\" versao=\"$this->urlVersion\">"
-            . "<idLote>$idLote</idLote>"
-            . "$sxml"
-            . "</enviBPe>";
-        $this->isValid($this->urlVersion, $request, 'enviaBPe');
+        $request = $sxml;
         $this->lastRequest = $request;
         $parameters = ['bpeDadosMsg' => $request];
+        $request = base64_encode(gzencode($request, 9, FORCE_GZIP));
         $body = "<bpeDadosMsg xmlns=\"$this->urlNamespace\">$request</bpeDadosMsg>";
+        $method = $this->urlMethod;
         $this->lastResponse = $this->sendRequest($body, $parameters);
         return $this->lastResponse;
     }
@@ -115,22 +111,22 @@ class Tools extends ToolsCommon
             $tpAmb = $this->tpAmb;
         }
         //carrega servi�o
-        $servico = 'CteConsultaProtocolo';
+        $servico = 'BPeConsulta';
         $this->checkContingencyForWebServices($servico);
         $this->servico(
             $servico,
             $uf,
             $tpAmb
         );
-        $request = "<consSitCTe xmlns=\"$this->urlPortal\" versao=\"$this->urlVersion\">"
+        $request = "<consSitBPe xmlns=\"$this->urlPortal\" versao=\"$this->urlVersion\">"
             . "<tpAmb>$tpAmb</tpAmb>"
             . "<xServ>CONSULTAR</xServ>"
-            . "<chCTe>$chave</chCTe>"
-            . "</consSitCTe>";
-        $this->isValid($this->urlVersion, $request, 'consSitCTe');
+            . "<chBPe>$chave</chBPe>"
+            . "</consSitBPe>";
+        $this->isValid($this->urlVersion, $request, 'consSitBPe');
         $this->lastRequest = $request;
-        $parameters = ['cteDadosMsg' => $request];
-        $body = "<cteDadosMsg xmlns=\"$this->urlNamespace\">$request</cteDadosMsg>";
+        $parameters = ['bpeDadosMsg' => $request];
+        $body = "<bpeDadosMsg xmlns=\"$this->urlNamespace\">$request</bpeDadosMsg>";
         $this->lastResponse = $this->sendRequest($body, $parameters);
         return $this->lastResponse;
     }
