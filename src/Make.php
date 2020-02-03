@@ -531,13 +531,15 @@ class Make
             true,
             $identificador . 'Sigla da UF'
         );
-        $this->dom->addChild(
-            $this->enderEmit,
-            'fone',
-            $std->fone,
-            false,
-            $identificador . 'Telefone'
-        );
+        if (isset($std->fone)) {
+            $this->dom->addChild(
+                $this->enderEmit,
+                'fone',
+                $std->fone,
+                false,
+                $identificador . 'Telefone'
+            );
+        }
         $this->dom->addChild(
             $this->enderEmit,
             'email',
