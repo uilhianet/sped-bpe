@@ -678,13 +678,15 @@ class Make
             true,
             $identificador . 'Nome do Pais'
         );
-        $this->dom->addChild(
-            $this->enderComp,
-            'fone',
-            $std->fone,
-            false,
-            $identificador . 'Telefone'
-        );
+        if (isset($std->fone)) {
+            $this->dom->addChild(
+                $this->enderComp,
+                'fone',
+                $std->fone,
+                false,
+                $identificador . 'Telefone'
+            );
+        }
         $this->dom->addChild(
             $this->enderComp,
             'email',
@@ -798,13 +800,15 @@ class Make
             true,
             $identificador . 'Nome do Pais'
         );
-        $this->dom->addChild(
-            $this->enderAgencia,
-            'fone',
-            $std->fone,
-            false,
-            $identificador . 'Telefone'
-        );
+        if (isset($std->fone)) {
+            $this->dom->addChild(
+                $this->enderAgencia,
+                'fone',
+                $std->fone,
+                false,
+                $identificador . 'Telefone'
+            );
+        }
         $this->dom->addChild(
             $this->enderAgencia,
             'email',

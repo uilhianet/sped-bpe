@@ -43,20 +43,14 @@ class Standardize
         'enviBPe',
         'bpeResultMsg',
         'retBPe',
-//        'retEnviCte',
-//        'retConsReciCTe',
-//        'consSitCTe',
-//        'retConsSitCTe',
-//        'eventoCTe',
-//        'retEventoCTe',
-//        'cteRecepcaoOSResult',
-//        'evCancCTe',
-//        'inutCTe',
-//        'retInutCTe',
-//        'procInutCTe',
-//        'CTe',
-//        'CTeOS',
-//        'retConsStatServCte'
+        'BPe',
+        'eventoBPe',
+        'evCancBPe',
+        'retEventoBPe',
+        'retEnviBPe',
+        'consSitBPe',
+        'retConsSitBPe',
+        'retConsSitBPe',
     ];
 
     /**

@@ -13,23 +13,23 @@ namespace NFePHP\BPe\Exception;
 class DocumentsException extends \InvalidArgumentException implements ExceptionInterface
 {
     public static $list = [
-        0 => "Este documento [{{msg}}] n„o recebe protocolos. Confira a ordem dos par‚metros.",
-        1 => "O arquivo indicado como BPe n„o est· protocolado ou n„o È um BPe!!",
-        2 => "O arquivo indicado como B2B n„o contÍm a tagB2B indicada!!",
-        3 => "O documento de resposta n„o contÍm o NODE {{msg}}.",
+        0 => "Este documento [{{msg}}] n√£o recebe protocolos. Confira a ordem dos par√¢metros.",
+        1 => "O arquivo indicado como BPe n√£o est√° protocolado ou n√£o √© um BPe!!",
+        2 => "O arquivo indicado como B2B n√£o cont√©m a tagB2B indicada!!",
+        3 => "O documento de resposta n√£o cont√©m o NODE {{msg}}.",
         4 => "O documento de resposta relata um erro {{msg}}.",
         5 => "Os documentos se referem a diferentes objetos. {{msg}}.",
-        6 => "O argumento passado n„o È um XML v·lido.",
-        7 => "Este xml n„o pertence ao projeto SPED-NFe.",
-        8 => "A configuraÁ„o (config.json) n„o È v·lido {{msg}}.",
+        6 => "O argumento passado n√£o √© um XML v√°lido.",
+        7 => "Este xml n√£o pertence ao projeto SPED-NFe.",
+        8 => "A configura√ß√£o (config.json) n√£o √© v√°lido {{msg}}.",
         9 => "Falta o CSC no config.json.",
         10 => "Falta o CSCId no config.json.",
-        11 => "Falta a URL do serviÁo NfeConsultaQR.",
-        12 => "O TXT n„o representa uma NFe",
-        13 => "O numero de notas indicado na primeira linha do TXT È diferente do numero total de notas do txt.",
-        14 => "Falha na validaÁ„o do TXT:\n {{msg}}.",
-        15 => "Um TXT de NFe deve ser passado como par‚metro, e nada foi passado.",
-        16 => "O txt tem um campo n„o definido {{msg}}"
+        11 => "Falta a URL do servi√ßo NfeConsultaQR.",
+        12 => "O TXT n√£o representa uma NFe",
+        13 => "O numero de notas indicado na primeira linha do TXT √© diferente do numero total de notas do txt.",
+        14 => "Falha na valida√ß√£o do TXT:\n {{msg}}.",
+        15 => "Um TXT de NFe deve ser passado como par√¢metro, e nada foi passado.",
+        16 => "O txt tem um campo n√£o definido {{msg}}"
     ];
 
     public static function wrongDocument($code, $msg = '')

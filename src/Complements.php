@@ -19,6 +19,8 @@ class Complements
      */
     public static function toAuthorize($request, $response)
     {
+
+        //return $request;
         $st = new Standardize();
         $key = ucfirst($st->whichIs($request));
         if ($key != 'BPe' && $key != 'EventoBPe') {
@@ -38,6 +40,7 @@ class Complements
      */
     protected static function addBPeProtocol($request, $response)
     {
+
         $req = new DOMDocument('1.0', 'UTF-8');
         $req->preserveWhiteSpace = false;
         $req->formatOutput = false;
@@ -108,10 +111,10 @@ class Complements
         $tpEvento = $retEv->getElementsByTagName('tpEvento')->item(0)->nodeValue;
         if ($tpEvento == '110111') {
             $node = 'procCancBPe';
-        } elseif ($tpEvento == '110112') {
-            $node = 'procEncBPe';
-        } elseif ($tpEvento == '110114') {
-            $node = 'procIncCondutor';
+        } elseif ($tpEvento == '110115') {
+            $node = 'procNaoEmb';
+        } elseif ($tpEvento == '110116') {
+            $node = 'procAlteracaoPoltrona';
         } else {
             throw DocumentsException::wrongDocument(4, "Evento não disponivel.");
         }
@@ -145,7 +148,7 @@ class Complements
         return $xml;
     }
 
-     /**
+    /**
      * Add cancel protocol to a autorized BPe
      * if event is not a cancellation will return
      * the same autorized BPe passing
